@@ -1,13 +1,46 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-utilities.css">
-    <link rel="stylesheet" href="css/bootstrap.css.map">
     <meta charset="UTF-8">
-    <title>Bienvenido al restaurante</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Gestión de Órdenes</title>
+    
 </head>
 <body>
 
+<div class="container" id="home-screen">
+    <h1>Gestión de Órdenes</h1>
+    <button class="register" onclick="orderManager.registerOrder()">+ Registrar Orden</button>
+    <button class="process" onclick="orderManager.processOrders()">Procesar Órdenes</button>
+</div>
+
+<div class="container" id="orders-screen" style="display:none;">
+    <h1>Órdenes</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Detalle</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody id="orders-table">
+                <!-- Rows will be dynamically inserted here -->
+            </tbody>
+        </table>
+    </div>
+    <button class="next-order" onclick="orderManager.nextOrder()">Siguiente Orden</button>
+    <button class="no-orders" id="no-orders-btn" onclick="orderManager.noMoreOrders()" style="display:none;">Ya no hay órdenes disponibles</button>
+</div>
+
+<div class="container" id="no-orders-screen" style="display:none;">
+    <h1>No hay órdenes registradas</h1>
+    <p class="no-orders">Actualmente no tienes órdenes registradas.</p>
+    <a href="#" onclick="orderManager.returnHome()">Regresar al inicio</a>
+</div>
+
+<script src="js/script.js"></script>
 </body>
 </html>
