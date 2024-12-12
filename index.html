@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
+
     <title>Gestión de Órdenes</title>
-    
 </head>
 <body>
 
@@ -17,19 +18,8 @@
 
 <div class="container" id="orders-screen" style="display:none;">
     <h1>Órdenes</h1>
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Detalle</th>
-                    <th>Fecha</th>
-                </tr>
-            </thead>
-            <tbody id="orders-table">
-                <!-- Rows will be dynamically inserted here -->
-            </tbody>
-        </table>
+    <div id="order-details-container">
+        <!-- Aquí se mostrarán los detalles de cada orden -->
     </div>
     <button class="next-order" onclick="orderManager.nextOrder()">Siguiente Orden</button>
     <button class="no-orders" id="no-orders-btn" onclick="orderManager.noMoreOrders()" style="display:none;">Ya no hay órdenes disponibles</button>

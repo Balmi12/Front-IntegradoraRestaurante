@@ -20,31 +20,39 @@ const orderManager = {
             document.getElementById("no-orders-screen").style.display = "block";
         } else {
             this.currentIndex = 0;
-            this.updateOrderTable();
+            this.showOrderDetails();
             document.getElementById("home-screen").style.display = "none";
             document.getElementById("orders-screen").style.display = "block";
         }
     },
 
-    // Actualiza la tabla con las órdenes actuales
-    updateOrderTable: function () {
-        const tableBody = document.getElementById("orders-table");
-        tableBody.innerHTML = ""; // Limpia las filas existentes
-        this.orders.forEach(order => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${order.id}</td>
-                <td>${order.detail}</td>
-                <td>${order.date}</td>
+    // Muestra los detalles de la orden actual
+    showOrderDetails: function () {
+        const orderDetailsContainer = document.getElementById("order-details-container");
+        orderDetailsContainer.innerHTML = ""; // Limpia el contenido anterior
+
+        if (this.currentIndex < this.orders.length) {
+            const currentOrder = this.orders[this.currentIndex];
+            const orderDetails = document.createElement("div");
+            orderDetails.className = "order-details";
+            orderDetails.innerHTML = `
+                <p><strong>ID:</strong> ${currentOrder.id}</p>
+                <p><strong>Detalle:</strong> ${currentOrder.detail}</p>
+                <p><strong>Fecha:</strong> ${currentOrder.date}</p>
             `;
-            tableBody.appendChild(row);
-        });
+            orderDetailsContainer.appendChild(orderDetails);
+        } else {
+            document.getElementById("no-orders-btn").style.display = "block";
+            document.querySelector(".next-order").style.display = "none";
+        }
     },
 
     // Muestra la siguiente orden o finaliza cuando no hay más órdenes
     nextOrder: function () {
         this.currentIndex++;
-        if (this.currentIndex >= this.orders.length) {
+        if (this.currentIndex < this.orders.length) {
+            this.showOrderDetails();
+        } else {
             document.getElementById("no-orders-btn").style.display = "block";
             document.querySelector(".next-order").style.display = "none";
         }

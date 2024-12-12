@@ -1,4 +1,4 @@
-body {
+body { 
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
@@ -9,6 +9,7 @@ body {
     height: 100vh;
     background-color: #f4f4f9;
 }
+
 .container {
     text-align: center;
     padding: 20px;
@@ -17,9 +18,11 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
 h1 {
     color: #333;
 }
+
 button {
     margin: 10px;
     padding: 10px 20px;
@@ -29,57 +32,71 @@ button {
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
 button.register {
     background-color: #28a745;
     color: white;
 }
+
 button.register:hover {
     background-color: #218838;
 }
+
 button.process {
     background-color: #007bff;
     color: white;
 }
+
 button.process:hover {
     background-color: #0056b3;
 }
+
 button.next-order {
     background-color: #ffc107;
     color: white;
 }
+
 button.next-order:hover {
     background-color: #e0a800;
 }
+
 button.no-orders {
     background-color: #dc3545;
     color: white;
 }
+
 button.no-orders:hover {
     background-color: #c82333;
 }
-.table-container {
-    margin-top: 20px;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
-table, th, td {
-    border: 1px solid #ddd;
-}
-th, td {
-    padding: 10px;
-    text-align: left;
-}
+
 .no-orders {
     color: #555;
     font-size: 18px;
 }
+
 a {
     text-decoration: none;
     color: #007bff;
 }
+
 a:hover {
     text-decoration: underline;
+}
+
+/* Estilos para los detalles de las órdenes */
+.order-details {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: left;
+    display: inline-block;
+    width: 80%;
+}
+
+.order-details p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #333;
 }
