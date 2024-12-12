@@ -4,41 +4,83 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/bootstrap-utilities.css">
-  <title>Bienvenido</title>
+  <title>Sistema de Restaurante</title>
+
+  <style>
+    body {
+      background-image: url('https://paraisocountryclub.com.mx/data/images/casasara_restaurante.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    .container-fluid {
+      margin-top: 10%;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      font-size: 1.2rem;
+      padding: 0.75rem 1.5rem;
+      margin: 0.5rem;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+
+    .btn-success {
+      background-color: #28a745;
+      border-color: #28a745;
+    }
+  </style>
 
   <script>
     async function crearOrden() {
-      const response = await
-      fetch('http://localhost:8080/api/orders/new', {
-        method: 'POST'
-      })
+      try {
+        const response = await fetch('http://localhost:8080/api/orders/new', {
+          method: 'POST'
+        });
 
-      if (!response.ok) {
-        throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+        if (!response.ok) {
+          throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+        }
+
+        const { id } = await response.json();
+        alert("Se creó la orden #" + id);
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Hubo un error al crear la orden.');
       }
-
-      const { id, customer, comidas, total } = await response.json();
-
-      alert("Se creo la orden " + id)
     }
-
   </script>
 </head>
 <body>
-
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12">
-      <h1>Sistema de Restaurante</h1>
-      <button type="button" class="btn btn-success" onclick="crearOrden()" id="btnAgregarPedido">Agregar nuevo Pedido</button>
-      <a href="atenderOrdenes.html" class="btn btn-primary" id="btnIrOrdenes">Atender Ordenes</a>
-    </div>
-  </div>
-
-
-
+<div class="overlay"></div>
+<div class="container-fluid text-center">
+  <h1>Bienvenido al Sistema de Restaurante</h1>
+  <button type="button" class="btn btn-success" onclick="crearOrden()" id="btnAgregarPedido">Agregar nuevo Pedido</button>
+  <a href="atenderOrdenes.html" class="btn btn-primary" id="btnIrOrdenes">Atender Órdenes</a>
 </div>
-
+<script src="js/bootstrap.bundle.js"></script>
 </body>
 </html>

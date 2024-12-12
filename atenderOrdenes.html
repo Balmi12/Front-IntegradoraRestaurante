@@ -4,68 +4,137 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-utilities.css">
-    <title>Hola Cocinero</title>
+    <title>Atender Órdenes</title>
+    <style>
+        body {
+            background-image: url('https://www.inmeza.com/cdn/shop/articles/cocina_eficiente_restaurante_1208x630.jpg?v=1571928267');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
 
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            margin-top: 5%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            font-size: 1.2rem;
+            padding: 0.75rem 1.5rem;
+        }
+    </style>
     <script>
-
         async function consultarOrden() {
-            const conOrd = await fetch('http://localhost:8080/api/orders/peek', {
-                    method: 'GET'
-                })
-            if (!conOrd.ok) {
-                throw new Error(`Error al consultar orden ${conOrd.status}`);
+            try {
+                const response = await fetch('http://localhost:8080/api/orders/peek', { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error(`Error al consultar orden: ${response.status}`);
+                }
+                const order = await response.json();
+                displayOrder(order);
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('orderContainer').innerHTML = '<p class="text-danger">Error al consultar la orden</p>';
             }
-            const jsonResponse = await conOrd.json();
-
-            const {id, customer, comidas, total} = jsonResponse;
-
-
         }
 
         async function atenderOrden() {
-            fetch('http://localhost:8080/api/orders/poll', {
-                method: 'GET'
-            })
-                .then(response => response.json())
-                .then(data => {
-                    displayOrder(data);
-                    if (data === null) {
-                        alert('Ya no hay más órdenes');
-                    } else {
-                        currentOrder = data;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            try {
+                const response = await fetch('http://localhost:8080/api/orders/poll', { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error(`Error al procesar la orden: ${response.status}`);
+                }
+                const order = await response.json();
+                displayOrder(order);
+                if (!order) {
+                    alert('Ya no hay más órdenes');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Hubo un error al procesar la orden.');
+            }
         }
 
         function displayOrder(order) {
             const orderContainer = document.getElementById('orderContainer');
-            if (order === null) {
-                orderContainer.innerHTML = 'No hay órdenes';
-            } else {
-                orderContainer.innerHTML = JSON.stringify(order);
+            if (!order) {
+                orderContainer.innerHTML = '<p class="text-muted">No hay órdenes disponibles</p>';
+                return;
             }
+
+            const { id, customer, comidas, total } = order;
+
+            const orderHTML = `
+                <div class="card mb-3">
+                    <div class="card-header bg-primary text-white">
+                        Orden #${id} - Cliente: ${customer}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Comidas</h5>
+                        <div class="row">
+                            ${comidas.map(comida => `
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <img src="${comida.image}" class="card-img-top" alt="${comida.name}">
+                                        <div class="card-body">
+                                            <h6 class="card-title">${comida.name} (${comida.type})</h6>
+                                            <p class="card-text">Precio: $${comida.price}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <strong>Total: $${total}</strong>
+                    </div>
+                </div>`;
+
+            orderContainer.innerHTML = orderHTML;
         }
 
         window.onload = consultarOrden;
     </script>
 </head>
-
-
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <h1>Atender Ordenes</h1>
-            <div id="orderContainer">
-
-            </div>
-            <button onclick="atenderOrden()">Procesar Pedido</button>
-        </div>
+<div class="overlay"></div>
+<div class="container text-center">
+    <h1>Atender Órdenes</h1>
+    <div id="orderContainer" class="mb-4">
+        <!-- Las órdenes se mostrarán aquí -->
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary" onclick="atenderOrden()">Procesar Pedido</button>
     </div>
 </div>
+<script src="js/bootstrap.bundle.js"></script>
 </body>
 </html>
