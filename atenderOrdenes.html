@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap-utilities.css">
+    <title>Hola Cocinero</title>
+
+    <script>
+
+        async function consultarOrden() {
+            const conOrd = await fetch('http://localhost:8080/api/orders/peek', {
+                    method: 'GET'
+                })
+            if (!conOrd.ok) {
+                throw new Error(`Error al consultar orden ${conOrd.status}`);
+            }
+            const jsonResponse = await conOrd.json();
+
+            const {id, customer, comidas, total} = jsonResponse;
+            console.log(`${id} ${customer} ${total}  ${comidas}`)
+
+
+        }
+
+        async function atenderOrden() {
+            fetch('http://localhost:8080/api/orders/poll', {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    displayOrder(data);
+                    if (data === null) {
+                        alert('Ya no hay más órdenes');
+                    } else {
+                        currentOrder = data;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function displayOrder(order) {
+            const orderContainer = document.getElementById('orderContainer');
+            if (order === null) {
+                orderContainer.innerHTML = 'No hay órdenes';
+            } else {
+                orderContainer.innerHTML = JSON.stringify(order);
+            }
+        }
+
+        window.onload = consultarOrden;
+    </script>
+</head>
+
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>Atender Ordenes</h1>
+            <div id="orderContainer">
+
+            </div>
+            <button onclick="atenderOrden()">Procesar Pedido</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>

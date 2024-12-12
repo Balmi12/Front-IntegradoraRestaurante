@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/bootstrap-utilities.css">
+  <title>Bienvenido</title>
+
+  <script>
+    async function crearOrden() {
+      const response = await
+      fetch('http://localhost:8080/api/orders/new', {
+        method: 'POST'
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
+      }
+
+      const { id, customer, comidas, total } = await response.json();
+
+      alert("Se creo la orden " + id)
+    }
+
+  </script>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <h1>Sistema de Restaurante</h1>
+      <button type="button" class="btn btn-success" onclick="crearOrden()" id="btnAgregarPedido">Agregar nuevo Pedido</button>
+      <a href="atenderOrdenes.html" class="btn btn-primary" id="btnIrOrdenes">Atender Ordenes</a>
+    </div>
+  </div>
+
+
+
+</div>
+
+</body>
+</html>
